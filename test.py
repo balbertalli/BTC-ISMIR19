@@ -98,33 +98,33 @@ for i, audio_path in enumerate(audio_paths):
     # lab file to midi file
     
 
-    starts, ends, pitchs = list(), list(), list()
+    # starts, ends, pitchs = list(), list(), list()
 
-    intervals, chords = mir_eval.io.load_labeled_intervals(save_path)
-    for p in range(12):
-        for i, (interval, chord) in enumerate(zip(intervals, chords)):
-            root_num, relative_bitmap, _ = mir_eval.chord.encode(chord)
-            tmp_label = mir_eval.chord.rotate_bitmap_to_root(relative_bitmap, root_num)[p]
-            if i == 0:
-                start_time = interval[0]
-                label = tmp_label
-                continue
-            if tmp_label != label:
-                if label == 1.0:
-                    starts.append(start_time), ends.append(interval[0]), pitchs.append(p + 48)
-                start_time = interval[0]
-                label = tmp_label
-            if i == (len(intervals) - 1): 
-                if label == 1.0:
-                    starts.append(start_time), ends.append(interval[1]), pitchs.append(p + 48)
+    # intervals, chords = mir_eval.io.load_labeled_intervals(save_path)
+    # for p in range(12):
+    #     for i, (interval, chord) in enumerate(zip(intervals, chords)):
+    #         root_num, relative_bitmap, _ = mir_eval.chord.encode(chord)
+    #         tmp_label = mir_eval.chord.rotate_bitmap_to_root(relative_bitmap, root_num)[p]
+    #         if i == 0:
+    #             start_time = interval[0]
+    #             label = tmp_label
+    #             continue
+    #         if tmp_label != label:
+    #             if label == 1.0:
+    #                 starts.append(start_time), ends.append(interval[0]), pitchs.append(p + 48)
+    #             start_time = interval[0]
+    #             label = tmp_label
+    #         if i == (len(intervals) - 1): 
+    #             if label == 1.0:
+    #                 starts.append(start_time), ends.append(interval[1]), pitchs.append(p + 48)
 
-    midi = pm.PrettyMIDI()
-    instrument = pm.Instrument(program=0)
+    # midi = pm.PrettyMIDI()
+    # instrument = pm.Instrument(program=0)
 
-    for start, end, pitch in zip(starts, ends, pitchs):
-        pm_note = pm.Note(velocity=120, pitch=pitch, start=start, end=end)
-        instrument.notes.append(pm_note)
+    # for start, end, pitch in zip(starts, ends, pitchs):
+    #     pm_note = pm.Note(velocity=120, pitch=pitch, start=start, end=end)
+    #     instrument.notes.append(pm_note)
 
-    midi.instruments.append(instrument)
-    midi.write(save_path.replace('.lab', '.midi'))    
+    # midi.instruments.append(instrument)
+    # midi.write(save_path.replace('.lab', '.midi'))    
 
