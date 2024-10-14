@@ -39,7 +39,10 @@ def audio_file_to_features(audio_file, config):
             feature = np.concatenate((feature, tmp), axis=1)
         currunt_sec_hz = end_idx
     tmp = librosa.cqt(original_wav[currunt_sec_hz:], sr=sr, n_bins=config.feature['n_bins'], bins_per_octave=config.feature['bins_per_octave'], hop_length=config.feature['hop_length'])
-    feature = np.concatenate((feature, tmp), axis=1)
+    if currunt_sec_hz == 0:
+        feature = tmp
+    else:
+        feature = np.concatenate((feature, tmp), axis=1)
     feature = np.log(np.abs(feature) + 1e-6)
     feature_per_second = config.mp3['inst_len'] / config.model['timestep']
     song_length_second = len(original_wav)/config.mp3['song_hz']
