@@ -6,6 +6,7 @@ from btc_model import *
 from utils.mir_eval_modules import audio_file_to_features, idx2chord, idx2voca_chord, get_audio_paths
 import argparse
 import warnings
+from librosa.util.exceptions import ParameterError
 
 warnings.filterwarnings('ignore')
 logger.logging_verbosity(1)
@@ -49,7 +50,11 @@ audio_paths = get_audio_paths(args.audio_dir)
 for i, audio_path in enumerate(audio_paths):
     logger.info("======== %d of %d in progress ========" % (i + 1, len(audio_paths)))
     # Load mp3
-    feature, feature_per_second, song_length_second = audio_file_to_features(audio_path, config)
+    try:
+        feature, feature_per_second, song_length_second = audio_file_to_features(audio_path, config)
+    except ParameterError:
+        print(audio_path + " caused an error. Skipping...")
+        continue
     logger.info("audio file loaded and feature computation success : %s" % audio_path)
 
     # Majmin type chord recognition
